@@ -1,0 +1,71 @@
+npm -v 5.6.0
+node -v 8.10.0
+npm install -g @angular/cli@latest
+    SELF_SIGNED_CERT_IN_CHAIN error
+
+ng -v 1.7.4
+ng new subjects
+
+VS plugins:-
+Prettier, TSLint, Debugger for Chrome
+
+---
+
+ng6 + rxjs 6 
++ TBS4? / ngbootstrap (https://ng-bootstrap.github.io/#/components/timepicker/examples)
++ scss 
++ lodash + moment 
++ ngrx 4
++ clusterize + d3 + ??
++ firebase ?? 
+
+npm install @angular/cli@next -g
+ng -v
+
+	Angular CLI: 6.0.0-rc.9
+	Node: 8.10.0
+	OS: win32 x64
+	Angular:
+	...
+
+	Package                      Version
+	-----------------------------------------------
+	@angular-devkit/architect    0.5.12
+	@angular-devkit/core         0.5.12
+	@angular-devkit/schematics   0.5.12
+	@schematics/angular          0.5.12
+	@schematics/update           0.5.12
+	rxjs                         6.0.0
+	typescript                   2.7.2
+
+ng new ng6
+cd ng6
+npm install lodash --save
+npm install moment --save
+npm install @ngrx/store @ngrx/effects --save
+
+npm install @ngrx/core @ngrx/store @ngrx/effects --save
+	C:\xxx\ng6>npm install @ngrx/core @ngrx/store @ngrx/effects --save
+	npm WARN @ngrx/core@1.2.0 requires a peer of rxjs@^5.0.0-beta.12 but none is installed. You must install peer dependencies yourself.
+	npm WARN @ngrx/store@5.2.0 requires a peer of @angular/core@^5.0.0 but none is installed. You must install peer dependencies yourself.
+	npm WARN @ngrx/store@5.2.0 requires a peer of rxjs@^5.5.0 but none is installed. You must install peer dependencies yourself.
+	npm WARN @ngrx/effects@5.2.0 requires a peer of @angular/core@^5.0.0 but none is installed. You must install peer dependencies yourself.
+	npm WARN @ngrx/effects@5.2.0 requires a peer of rxjs@^5.5.0 but none is installed. You must install peer dependencies yourself.
+	npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.3 (node_modules\fsevents):
+	npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.3: wanted {"os":"darwin","arch":"any"} (current: {"os":"win32","arc
+	h":"x64"})
+
+	+ @ngrx/core@1.2.0
+	+ @ngrx/store@5.2.0
+	+ @ngrx/effects@5.2.0
+	added 3 packages in 17.386s
+
+
+npm shrinkwrap
+	C:\xxx\ng6>npm shrinkwrap
+	npm notice package-lock.json has been renamed to npm-shrinkwrap.json. npm-shrinkwrap.json will be used for future installations.
+
+---
+
+
+
