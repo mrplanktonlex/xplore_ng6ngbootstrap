@@ -65,6 +65,42 @@ npm shrinkwrap
 	C:\xxx\ng6>npm shrinkwrap
 	npm notice package-lock.json has been renamed to npm-shrinkwrap.json. npm-shrinkwrap.json will be used for future installations.
 
+npm install --save-dev karma-phantomjs-launcher
+(requires IE packages)
+polyfills.ts 
+Below does NOT work:-
+	npm install classlist.js@next --save
+	npm install classlist.@next --save
+	npm install classlist --save	
+use this instead:-
+	npm install classlist.js --save	
+
+	
+npm install jasmine-marbles --save-dev
+		C:\xxx\ng6>npm install jasmine-marbles --save-dev
+		npm WARN @ng-bootstrap/ng-bootstrap@1.1.2 requires a peer of @angular/common@^5.0.2 but none is installed. You must install peer d
+
+		npm WARN @ng-bootstrap/ng-bootstrap@1.1.2 requires a peer of @angular/core@^5.0.2 but none is installed. You must install peer dep
+		npm WARN @ng-bootstrap/ng-bootstrap@1.1.2 requires a peer of @angular/forms@^5.0.2 but none is installed. You must install peer de
+		npm WARN @ngrx/core@1.2.0 requires a peer of rxjs@^5.0.0-beta.12 but none is installed. You must install peer dependencies yoursel
+		npm WARN @ngrx/effects@5.2.0 requires a peer of @angular/core@^5.0.0 but none is installed. You must install peer dependencies you
+		npm WARN @ngrx/effects@5.2.0 requires a peer of rxjs@^5.5.0 but none is installed. You must install peer dependencies yourself.
+		npm WARN @ngrx/store@5.2.0 requires a peer of @angular/core@^5.0.0 but none is installed. You must install peer dependencies yours
+		npm WARN @ngrx/store@5.2.0 requires a peer of rxjs@^5.5.0 but none is installed. You must install peer dependencies yourself.
+		npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.3 (node_modules\fsevents):
+		npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.3: wanted {"os":"darwin","arch":"any"} (curren
+		h":"x64"})
+
+		+ jasmine-marbles@0.3.1
+		added 1 package in 37.257s
+
+		   ?-------------------------------------?
+		   ¦                                     ¦
+		   ¦   Update available 5.6.0 ? 6.0.0    ¦
+		   ¦       Run npm i npm to update       ¦
+		   ¦                                     ¦
+		   ?-------------------------------------?
+
 ---
 
 
