@@ -258,11 +258,14 @@ Additional learning#2:
       }
 
 ---
+---
 
 6. 
 @ViewChild and ngAfterViewInit
-
-
+  - ViewChild should be used in non-content projection times.
+  - it cannot be applied to elements which are content-projected.
+  
+  
 
 
 
