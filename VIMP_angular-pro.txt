@@ -232,10 +232,35 @@ Additional learning#2:
 
 ---
 
-5. 
+5. @ContentChildren and QueryLists
 
+  app.component.ts
+      <auth-form (submitted)="loginUser($event)">
+        <h3>Login</h3>
+        <auth-remember (checked)="rememberUser($event)"></auth-remember>
+        <auth-remember (checked)="rememberUser($event)"></auth-remember>
+        <auth-remember (checked)="rememberUser($event)"></auth-remember>
+        <button type="submit">
+          Login
+        </button>
+      </auth-form>
 
+  auth-form.component.ts  
+    @ContentChildren(AuthRememberComponent) remember: QueryList<AuthRememberComponent>;
 
+  // use foreach to loop over the items in the querylist.
+    ngAfterContentInit() {
+        if (this.remember) {
+          this.remember.forEach((item) => {
+            item.checked.subscribe((checked: boolean) => this.showMessage = checked);
+          });
+        }
+      }
+
+---
+
+6. 
+@ViewChild and ngAfterViewInit
 
 
 
