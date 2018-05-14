@@ -1,0 +1,266 @@
+1. content projection. 
+Content is projected from parent to the child.
+In our case, parent = app.component.ts  
+             child = auth-form.component.ts.
+
+app.component.ts:
+	<auth-form 
+        (submitted)="createUser($event)">
+        <h3>Create account</h3>			// content#1 to project
+      </auth-form>
+      <auth-form 
+        (submitted)="loginUser($event)">
+        <h3>Login</h3>					    // content#2 to project
+      </auth-form>
+	  
+auth-form.ts:
+	<form (ngSubmit)="onSubmit(form.value)" #form="ngForm">
+        <ng-content></ng-content>	  // placeholder for the incoming content (to project).
+        <label>
+          Email address
+          <input type="email" name="email" ngModel>
+        </label>
+        <label>
+          Password
+          <input type="password" name="password" ngModel>
+        </label>
+        <button type="submit">
+          Submit
+        </button>
+      </form>
+    </div>	  
+
+---
+
+2. ng-content + projection slots
+Let say we want to inject a different button based on the form.
+
+Problem: if two of more different types (h3 + button) are projected, there is only one ng-content, so everything will be displayed @ one place.
+         How to display them separately ??? 
+A. Use projection-slots.
+   Projection-slots tell angular which incoming content should go in which slot.
+   Projection-slots are implemented using the "select" attribute of ng-content.
+   
+   Think of projection-slots as queryselectors.
+
+So, we can write any of the following in our child-component   
+  2.1  (Using the tag name)
+    <ng-content select="h3"></ng-content>
+   <ng-content select="button"></ng-content>
+  2.2  (Using an id)
+   <ng-content select="#someid"></ng-content> 
+  2.3  (Using an css class) -- may have gotchas
+   in child: <ng-content select=".someCSSClass"></ng-content> 
+   in parent: u may need to add like class = "someCssClass" in the content being projected, i Think
+    eg. 
+    <button type="submit" class="someCSSClass">Login</button> 
+
+  eg. 
+
+  app.component.ts
+        @Component({
+        selector: 'app-root',
+        template: `
+          <div>
+            <auth-form 
+              (submitted)="createUser($event)">
+              <h3>Create account</h3>
+              <button type="submit"> Join us </button> // content #1 projected
+            </auth-form>
+            <auth-form 
+              (submitted)="loginUser($event)">
+              <h3>Login</h3>
+              <button type="submit">Login</button>    // content #2 projected
+            </auth-form>
+          </div>
+        `
+      })      
+
+auth-form.ts
+
+      @Component({
+        selector: 'auth-form',
+        template: `
+          <div>
+            <form (ngSubmit)="onSubmit(form.value)" #form="ngForm">
+              <ng-content select="h3"></ng-content>   // projection-slot #1 for content#1
+              <label>
+                Email address
+                <input type="email" name="email" ngModel>
+              </label>
+              <label>
+                Password
+                <input type="password" name="password" ngModel>
+              </label>
+              <ng-content select="button"></ng-content> // projection-slot #2 for content#2
+            </form>
+          </div>
+        `
+      })
+
+---
+
+3. Content-Projecting components & binding to them.
+Here, we will see how to content-project a custom component (instead of a button).
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <div>
+      <auth-form 
+        (submitted)="createUser($event)">
+        <h3>Create account</h3>
+        <button type="submit">
+          Join us
+        </button>
+      </auth-form>
+      <auth-form 
+        (submitted)="loginUser($event)">
+        <h3>Login</h3>
+        <auth-remember (checked)="rememberUser($event)"></auth-remember>    // content is a custom-component.
+        <button type="submit">
+          Login
+        </button>
+      </auth-form>
+    </div>
+  `
+})
+...
+rememberUser() will need to be implemented in the parent app.component.ts
+
+@Component({
+  selector: 'auth-form',
+  template: `
+    <div>
+      <form (ngSubmit)="onSubmit(form.value)" #form="ngForm">
+        <ng-content select="h3"></ng-content>
+        <label>
+          Email address
+          <input type="email" name="email" ngModel>
+        </label>
+        <label>
+          Password
+          <input type="password" name="password" ngModel>
+        </label>
+        <ng-content select="auth-remember"></ng-content>    // same as before !!! use the custom-component's html selector
+        <ng-content select="button"></ng-content>
+      </form>
+    </div>
+  `
+})
+
+---
+
+Additional learning#1: (best practise #1)
+> in trying to keep app.module.ts readable, we have create auth-form.module.ts.
+> this helps modular coding and testing each module properly using test-bed.
+eg.
+app.module.ts (parent-module):-
+        import { NgModule } from '@angular/core';
+        import { BrowserModule } from '@angular/platform-browser';
+        import { AuthFormModule } from './auth-form/auth-form.module';
+        import { AppComponent } from './app.component';
+
+        @NgModule({
+          declarations: [
+            AppComponent
+          ],
+          imports: [
+            BrowserModule,
+            AuthFormModule
+          ],
+          bootstrap: [
+            AppComponent
+          ]
+        })
+        export class AppModule {}
+  
+auth-form.module.ts:
+        import { NgModule } from '@angular/core';
+        import { FormsModule } from '@angular/forms';
+        import { CommonModule } from '@angular/common';
+
+        import { AuthFormComponent } from './auth-form.component';
+        import { AuthRememberComponent } from './auth-remember.component';
+
+        @NgModule({
+          declarations: [
+            AuthFormComponent,
+            AuthRememberComponent
+          ],
+          imports: [
+            CommonModule,
+            FormsModule
+          ],
+          exports: [
+            AuthFormComponent,
+            AuthRememberComponent
+          ]
+        })
+        export class AuthFormModule {}
+
+---
+
+4. @ContentChild and ngAfterContentInit
+
+What is content-child ??
+      <auth-form (submitted)="loginUser($event)">
+        <h3>Login</h3>  // content child begins
+        <auth-remember (checked)="rememberUser($event)"></auth-remember>    // content is a custom-component.
+        <button type="submit">
+          Login
+        </button>       // content child ends
+      </auth-form>
+Everything within <auth-form> is a content-child.
+
+eg. auth-form.component.ts 
+  <ng-content select="auth-remember"></ng-content>
+        <div *ngIf="showMessage">
+          You will be logged in for 30 days
+        </div>
+
+  @ContentChild(AuthRememberComponent) remember: AuthRememberComponent;
+  ngAfterContentInit() {
+    if (this.remember) {
+      this.remember.checked.subscribe((checked: boolean) => this.showMessage = checked);
+    }
+  }
+
+Additional learning#2: 
+    >> You can subscribe() to @Output variable. VIMP!!!
+    >> ngAfterContentInit is triggered after the DOM has been loaded ???
+
+---
+
+5. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
