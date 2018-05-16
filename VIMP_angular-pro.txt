@@ -265,13 +265,25 @@ Additional learning#2:
   - ViewChild should be used in non-content projection times.
   - it cannot be applied to elements which are content-projected.
   
+
+Problem:- Expression has changed after it was checked error.
+A. Move code from ngAfterViewInit to ngAfterContentInit
+
+auth-form.component.ts
+		<ng-content select="auth-remember"></ng-content>
+        <auth-message 
+          [style.display]="(showMessage ? 'inherit' : 'none')">
+        </auth-message>
+		
+@ViewChild(AuthMessageComponent) message: AuthMessageComponent;
+ngAfterContentInit() {
+    if (this.message) {
+      this.message.days = 30;
+    }
+   ....
+  }		
   
-
-
-
-
-
-
+  
 
 
 
