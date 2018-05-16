@@ -337,8 +337,27 @@ this.email.nativeElement.focus();
 
 .emailcss { border-color: #9f72e6;}
 
-10. Renderer2
 
+
+10. Renderer/2 vs NativeElement: use Renderer for writing platform independent code.
+NativeElement is only for the web.
+
+10.1 
+use this:- this.renderer.setElementAttribute(this.email.nativeElement, 'placeholder', 'Enter your email Address');  
+	// instead of:- this.email.nativeElement.setAttribute('placeholder', 'Enter your email Address');
+	
+10.2
+use this:- this.renderer.setElementClass(this.email.nativeElement, 'emailcss', true)
+	// instead of:- this.email.nativeElement.classList.add('emailcss')
+	
+10.3
+use this:- this.renderer.invokeElementMethod(this.email.nativeElement, 'focus')
+	// instead of :- this.email.nativeElement.focus();
+	
+	
+----------------------------------
+
+11. Co
 
 
 
