@@ -314,6 +314,30 @@ Sol2:- Use ChangeDetectionRef.
 			}
 		  }		
   
+8.
+
+ViewChild and template#refs
+
+<label>
+          Email address
+          <input type="email" name="email" ngModel #email>
+        </label>
+		
+@ViewChild('email') email: ElementRef;    // this means @ViewChild('#email') email: ElementRef;		
+
+ ngAfterContentInit() {
+    console.log(this.email);
+}	
+
+9. Using ElementRef and NativeElement.
+
+this.email.nativeElement.setAttribute('placeholder', 'Enter your email Address');
+this.email.nativeElement.classList.add('emailcss')
+this.email.nativeElement.focus();
+
+.emailcss { border-color: #9f72e6;}
+
+10. Renderer2
 
 
 
