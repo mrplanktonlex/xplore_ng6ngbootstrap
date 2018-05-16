@@ -283,6 +283,36 @@ ngAfterContentInit() {
    ....
   }		
   
+7. ViewChildren and Querylist  (ONLY exception, for viewchildren, use ONLY ngAfterViewInit)
+QueryList is a live-collection and will be updated when u add something.
+
+IMP: ViewChildren is only available inside ngAfterViewInit, because its a live collection
+
+Problem:- Expression has changed after it was checked error.
+Sol1:- Put the mutation-code in setTimeout, without any secs.
+Sol2:- Use ChangeDetectionRef.
+
+<ng-content select="auth-remember"></ng-content>
+        <auth-message 													// note this.
+          [style.display]="(showMessage ? 'inherit' : 'none')">
+        </auth-message>
+        <auth-message 													// note this.
+          [style.display]="(showMessage ? 'inherit' : 'none')">
+        </auth-message>
+        <auth-message 													// note this.		
+          [style.display]="(showMessage ? 'inherit' : 'none')">
+        </auth-message>				
+		
+		@ViewChildren(AuthMessageComponent) message: QueryList<AuthMessageComponent>;		
+		constructor(private cd: ChangeDetectorRef) {}	// note this.				
+		  ngAfterViewInit() {
+			if (this.message) {
+			  this.message.forEach((message) => {
+				message.days = 30;				// This mutation is causing the error.
+			  });
+			  this.cd.detectChanges();			// note this.
+			}
+		  }		
   
 
 
