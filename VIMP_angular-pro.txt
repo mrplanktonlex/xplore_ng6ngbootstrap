@@ -432,7 +432,36 @@ NOTE:
 	}
 	
 	
-11.7 Passing context to a dynamic template	
+	
+11.7 Passing context (name, location) to a dynamic template	
+
+Background:- 
+	<template #tmpl let-name>
+		ToddMotto, England, UK
+		{{name}} // if u write let-name, we can use "name" to get its value
+	</template>
+
+	<template #tmpl let-name let-location="location">	// so here, name is not initialized, but location is initialized.
+		ToddMotto, England, UK
+	</template>
+
+11.7.1
+Above can now be written as 	
+	<template #tmpl let-name let-location="location">	// so here, name is not initialized, but location is initialized.
+		{{name}} , {{ location }}
+	</template>
+	
+	ngAfterContentInit() {
+		this.entry.createEmbeddedView(
+			this.tmpl,
+			{ 
+				$implicit = 'Motto Todd',	// VIMP: implicit values respond to any let-values. So if u change let-name to let-foo, this implicit value will be available in {{foo}}
+				location: 'England, UK'
+			}
+		); 
+	}
+
+
 
 
 
