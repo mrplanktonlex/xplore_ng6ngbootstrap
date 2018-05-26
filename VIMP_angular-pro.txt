@@ -357,8 +357,82 @@ use this:- this.renderer.invokeElementMethod(this.email.nativeElement, 'focus')
 	
 ----------------------------------
 
-11. Co
+nativeElement is for the web.
+renderer2 is for all env i.e. mobile n web.
 
+11. ComponentFactoryResolver , ViewContainRef + ViewChild
+
+11.1 Creating a Dynamic Component.
+- we create a factory for the DOM and then inject it in a placeholder-div <div #entry></div> tag in the template-section
+- @ViewChild('entry') entry: ViewContainerRef;
+> It takes a 2nd param as well:- 
+	@ViewChild('entry', { read: ViewContainRef} ) entry: ViewContainerRef;  // We will use this to create the dynamic component and insert it into #entry 
+> This gives us a different lookup token than what we used previously like: @ViewChild('nameof#ref') eRef: ElementRef
+
+- 
+constructor(
+	private resolver: ComponentFactoryResolver;
+) {
+}
+
+ngAfterContentInit(){
+	const authFormFactory = this.resolver.resolveComponentFactory(AuthFormComponent); //AuthFormComponent is imported above.
+	const component = this.entry.createComponent(authFormFactory);  // Console Error: did u add it to ngModule.entryComponents?. Solution: in app.module.ts add entryComponents array
+}
+
+---
+
+NOTE: 
+11.2 Input Elements for Dynamic Components
+	- Dynamic Components do not have an @Input(), so we cannot use it.
+    - component object above gives us component.instance, using which we can overwrite: component.instance.title = 'Create Account'
+
+11.3. Output Elements for Dynamic Components
+	- If AuthFormComponent had an event @Output() 'submitted' : EventEmitter ... , then we can subscribe to it like this.
+		component.instance.submitted.subscribe( ... )
+
+
+11.4 Destroying dynamic component:
+- for this, change the lines like this:-
+	old: const component = this.entry.createComponent(authFormFactory);
+	new: 
+		component: ComponentRef<AuthFormComponent>; // NOte: ComponentRef needs to be imported
+		ngAfterContentInit(){
+			this.component = this.entry.createComponent(authFormFactory);
+		}
+		destroyComponent() {	// this can be called on button click
+			this.component.destroy();
+		}
+		
+11.5 Dynamic Components in a specific order:
+		ngAfterContentInit(){
+			this.entry.createComponent(authFormFactory); // -1 is default. this is same as writing this.entry.createComponent(authFormFactory, -1);
+			this.component = this.entry.createComponent(authFormFactory, 0);  // 2nd param is zero.
+		}
+
+		moveComponent() {
+			this.entry.move (this.component.hostView, 1);  // we r moving the comp. from -1 to after 0, i.e. 1. // Note hostView.
+			// NOTE: this.entry is the viewchild i believe.
+		}
+		
+---
+
+11.6 Dynamic template rendering with ViewContainerRef
+
+	Plan: is to instantiate this template and insert it into #entry.
+
+	<template #tmpl>
+		ToddMotto, England, UK
+	</template>
+
+	@ViewChild('tmpl'), tmpl: TemplateRef <any>; // NOTE: import TemplateRef
+
+	ngAfterContentInit() {
+		this.entry.createEmbeddedView(this.tmpl); // Here we are using createEmbeddedView instead of createComponent	
+	}
+	
+	
+11.7 Passing context to a dynamic template	
 
 
 
