@@ -465,6 +465,39 @@ Above can now be written as
 
 
 
+11.8
+ng-container + ngTemplateOutlet will allow us to display <template> tags
+
+Note: <template> tags leave behind "template bindings()" or some string like that on the DOM, but ng-container does NOT!!!
+BUT ng-container will display its child tags on the DOM, but it itself is NOT visible on the DOM!!!
+
+<ng-container [ngTemplateOutlet] = "tmpl">	// ng-container is an intelligent container and takes a viewchild as a param.
+</ng-container>
+
+	<template #tmpl>
+		ToddMotto, England, UK
+	</template>
+
+IMP: Note: here, passing context to <template> does NOT require an ViewChild.createEmbeddedView.
+We can use it as a simple declarative JS obj. See below.
+
+11.8.1
+
+<ng-container 
+	[ngTemplateOutlet] = "tmpl">	// ng-container is an intelligent container and takes a viewchild as a param.
+	[ngTemplateOutletContext] = "ctx"
+</ng-container>
+
+	<template #tmpl let-name let-location="location">
+		{{ name }} : {{location}}
+	</template>
+
+export class AppComponent {
+	ctx = {
+		$implicit: 'Todd Motto';
+		location: 'England, UK';
+	};
+} // class ends
 
 
 
